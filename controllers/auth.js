@@ -87,21 +87,20 @@ const login = async(req, res = response) => {
         }
  
         // GENERAMOS EL JWT
-        const token = await generateJWT(dbUser.id, dbUser.name, dbUser.email);
+        const token = await generateJWT(dbUser.id, dbUser.name, dbUser.email, dbUser.isAdmin);
 
         // RESPUESTA DEL SERVICIO
         return res.status(200).json({
-            ok: true,
-            uid: dbUser.id, 
-            name: dbUser.name,
-            email: dbUser.email,
+            ok      : true,
+            uid     : dbUser.id, 
+            name    : dbUser.name,
+            email   : dbUser.email,
+            isAdmin : dbUser.isAdmin,
             token
         });
 
     } catch (error) {
-        
         console.log( error );
-
         return res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
@@ -125,10 +124,11 @@ const renewToken = async(req, res = response) => {
     const token = await generateJWT( uid, dbUser.name );
 
     return res.json({
-        ok: true,
+        ok      : true,
         uid,
-        name: dbUser.name,
-        email: dbUser.email,
+        name    : dbUser.name,
+        email   : dbUser.email,
+        isAdmin : dbUser.isAdmin,
         token
     });
 }

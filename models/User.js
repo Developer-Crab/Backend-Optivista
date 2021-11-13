@@ -40,6 +40,15 @@ const { Schema, model } = require("mongoose");
         type: String,
         require: true,
     },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    newsLetter: {
+        type: Boolean,
+        require: false,
+        default: false
+    },
  });
 
 

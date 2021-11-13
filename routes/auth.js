@@ -23,6 +23,7 @@ router.post('/create', [
     check('telephone', 'El nombre es obligatorio').not().isEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
     check('password', 'La contraseña es obligatoria').isLength({ min: 6}),
+    check('newsLetter'),
     validarCampos
 ], authController.SetNewUser);
 
