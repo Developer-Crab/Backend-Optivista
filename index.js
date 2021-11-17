@@ -1,6 +1,7 @@
 // Importaciones 
-const express = require('express');
-const cors = require('cors');
+const express    = require('express');
+const cors       = require('cors');
+
 const { dbConnection } = require('./db/config');
 // para las variables de entorno
 require('dotenv').config();
@@ -22,6 +23,10 @@ app.use( express.json());
 
 // CONFIGURAMOS LAS RUTAS
 app.use( '/customer/account/', require('./routes/auth') );
+
+//RUTA PARA MAIL
+app.use( '/customer/send-email/', require('./routes/contactMessage') );
+
 
 // levantamos la aplicacion de express
 app.listen( process.env.PORT , () => {

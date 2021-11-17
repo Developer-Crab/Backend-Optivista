@@ -1,9 +1,11 @@
 // Importaciones
 const { Router } = require('express');
-const { check } = require('express-validator');
-const { validarCampos } = require('../middlewares/validar-campos');
-const router = Router();
 
+const { check } = require('express-validator');
+
+const { validarCampos } = require('../middlewares/validar-campos');
+
+const router = Router();
 
 // controllers
 // const { crearUsuario, login, revalidarToken } = require('../controllers/auth');
