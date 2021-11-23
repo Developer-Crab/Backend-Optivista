@@ -49,6 +49,10 @@ const { Schema, model } = require("mongoose");
         require: false,
         default: false
     },
+    dateOfRegister: {
+        type: Date,
+        default: new Date(),
+    },
  });
 
 
