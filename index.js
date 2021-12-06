@@ -22,10 +22,15 @@ app.use( cors() );
 app.use( express.json());
 
 // CONFIGURAMOS LAS RUTAS
+
+// RUTA PARA USUARIOS
 app.use( '/customer/account/', require('./routes/auth') );
 
-//RUTA PARA MAIL
+// RUTA PARA MAIL
 app.use( '/customer/send-email/', require('./routes/contactMessage') );
+
+// RUTA PARA LAS MARCAS
+app.use( '/brands/', require('./routes/brand'));
 
 // levantamos la aplicacion de express
 app.listen( process.env.PORT , () => {
