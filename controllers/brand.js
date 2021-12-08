@@ -1,9 +1,9 @@
-const Brand = require('../models/Brand');
-// asignandole un tipado
+// ADD TYPE
 const { response } = require('express');
+// MODELS
+const Brand = require('../models/Brand');
 
-
-//CREAMOS UNA NUEVA MARCA
+// CREAMOS UNA NUEVA MARCA
 const setNewBrand = async(req, res = response) => {
 
     try {
@@ -32,7 +32,29 @@ const setNewBrand = async(req, res = response) => {
 
 }
 
+// OBTENEMOS TODAS LAS MARCAS
+const getBrands = async(req, res = response) => {
+
+    const from = Number(req.query.from) || 0;
+
+    const [ brands, total ] = await Promise.all([
+        Brand.find()
+                .skip( from ),
+                // .limit( 5 ),
+
+        Brand.count()
+    ]);
+
+    res.json({
+        ok: true,
+        brands,
+        total
+    });
+
+}
+
 // EXPORTAMOS 
 module.exports = {
-    setNewBrand
+    setNewBrand,
+    getBrands
 }

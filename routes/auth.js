@@ -1,20 +1,19 @@
-// Importaciones
+/*
+    ROUTE '/customer/account/'
+*/
+// IMPORTS
 const { Router } = require('express');
-
 const { check } = require('express-validator');
-
+// ROUTER
+const router = Router();
+// CONTROLLERS
+const authController = require('../controllers/auth');
+// VALIDATIONS
+const { validJWT } = require('../middlewares/validar-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 
-const router = Router();
-
-// controllers
-// const { crearUsuario, login, revalidarToken } = require('../controllers/auth');
-const authController = require('../controllers/auth');
-
-const { validJWT } = require('../middlewares/validar-jwt');
-
 /**
- * Ruta para la creacion de un nuevo usuario
+ * RUTA PARA LA CREACION DE UN NUEVO USUARIO CON SUS VALIDACIONES
  */
 router.post('/create', [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
@@ -31,7 +30,7 @@ router.post('/create', [
 
 
 /**
- * Ruta para el login de un usuario
+ * RUTA PARA EL LOGIN DE UN USUARIO CON SUS VALIDACIONES
  */
 router.post('/login', [
     check('email', 'El email es obligatorio').isEmail(),
@@ -39,10 +38,16 @@ router.post('/login', [
     validarCampos
 ], authController.login);
 
+
 /**
- * Ruta para revalidar token del usuario
+ * RUTA PARA REVALIDAR EL TOKEN DEL USUARIO
  */
 router.get('/renewToken', validJWT ,authController.renewToken);
+
+/**
+ * RUTA PARA REVALIDAR EL TOKEN DEL USUARIO
+ */
+router.get('/users', validJWT ,authController.getUsers);
 
 
 // EXPORTAMOS PARA SU USO EN OTRO LUGAR

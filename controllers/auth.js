@@ -1,16 +1,15 @@
-// Importaciones
+// ADD TYPE
+const { response } = require('express');
+// IMPORTS
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+// HERLPERS
 const { generateJWT } = require('../helpers/jwt');
 
-// asignandole un tipado
-const { response } = require('express');
-
-
-// CREAR UN NUEVO USUARIO
+// CREAMOS UN NUEVO USUARIO
 const SetNewUser = async(req, res = response) => {
     
-    const {name, lastName, secondLastName, birthDate, sexo, dni, telephone, email, password } = req.body; 
+    const {name, lastName, secondLastName, birthDate, sexo, dni, telephone, email, password, img } = req.body; 
 
     try {
 
@@ -60,7 +59,7 @@ const SetNewUser = async(req, res = response) => {
 
 }
 
-// login
+// CREAMOS EL LOGIN DE LA APP
 const login = async(req, res = response) => {
 
     const {email, password } = req.body;
@@ -109,16 +108,13 @@ const login = async(req, res = response) => {
 
 }
 
-
-// RENOVAR TOKEN
+// RENOVACIÓN DEL TOKEN
 const renewToken = async(req, res = response) => {
 
     const { uid } = req;
 
-    // read database
+    // READ DATABASE
     const dbUser = await User.findById(uid);
-    
-
 
     // GENERANDO EL JWT
     const token = await generateJWT( uid, dbUser.name );
@@ -133,9 +129,31 @@ const renewToken = async(req, res = response) => {
     });
 }
 
+// OBTENEMOS TODOS LOS USERS
+const getUsers = async (req, res = response) => {
+
+    const from = Number(req.query.from) || 0;
+
+    const [ users, total ] = await Promise.all([
+        User.find()
+                .skip( from ),
+                // .limit( 5 ),
+
+        User.count()
+    ]);
+
+    res.json({
+        ok: true,
+        users,
+        total
+    });
+
+}
+
 // EXPORTAMOS 
 module.exports = {
     SetNewUser,
     login,
-    renewToken
+    renewToken,
+    getUsers
 }

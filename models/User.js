@@ -53,6 +53,9 @@ const { Schema, model } = require("mongoose");
         type: Date,
         default: new Date(),
     },
+    img: {
+        type: String,
+    },
  });
 
 

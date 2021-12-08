@@ -1,38 +1,40 @@
-// Importaciones 
+// IMPORTS
 const express    = require('express');
 const cors       = require('cors');
-
+// DB
 const { dbConnection } = require('./db/config');
-// para las variables de entorno
+// PARA LAS VARIABLES DE ENTORNO
 require('dotenv').config();
-
-// Creamos el servidor/aplicacion de express
-const app = express();
-
-// Conexion a la BD 
+// CREAMOS EL SEVIDOR/APP DE EXPERSS
+const app = express(); 
+// CONEXION A LA BD
 dbConnection();
-
-// Directorio Público
+// DIRECTORIO PUBLICO
 app.use( express.static('public'));
-
 // CORS
 app.use( cors() );
-
-// middleware para poder leer la imformacion del body
+// MIDDLEWARE PARA PODER LEER LA INFORMACION DEL BODY
 app.use( express.json());
 
-// CONFIGURAMOS LAS RUTAS
+// --- CONFIGURAMOS LAS RUTAS
 
-// RUTA PARA USUARIOS
+// USUARIOS
 app.use( '/customer/account/', require('./routes/auth') );
 
-// RUTA PARA MAIL
-app.use( '/customer/send-email/', require('./routes/contactMessage') );
+// PARA LOS PRODUCTOS
+app.use( '/products/', require('./routes/product') );
 
-// RUTA PARA LAS MARCAS
+// MARCAS
 app.use( '/brands/', require('./routes/brand'));
 
-// levantamos la aplicacion de express
+//  MAIL
+app.use( '/customer/send-email/', require('./routes/contactMessage') );
+
+// SUBIDAD DE IMAGENES
+app.use( '/uploads/', require('./routes/uploads') );
+
+
+// ---  LEVANTAMOS LA APP DE EXPRESS --- //
 app.listen( process.env.PORT , () => {
     console.log(`Servidor corriendo en puerto ${ 4000 }`) 
 });

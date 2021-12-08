@@ -1,24 +1,25 @@
+// ADD TYPE
+const { response } = require('express');
+// NODEMAILER
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
-// asignandole un tipado
-const { response } = require('express');
+// MODELS
 const Contact = require('../models/Contact');
 
 const OAuth2_client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
 
 OAuth2_client.setCredentials( { refresh_token : process.env.REFRESH_TOKEN });
 
+// FUNCION PARA ENVIAR UN MAIL A LA PERSONA QUE CONTACTA 
 const sendContactEmail = async (req, res = response) => {
-
 
     const {name, email, telephone, text, hidden, dateOfContact } = req.body;
     
     const accessToken = OAuth2_client.getAccessToken();
     
+    const dbContact = new Contact( req.body );
     
     try {
-
-        const dbContact = new Contact( req.body );
 
         await dbContact.save();
 
@@ -51,6 +52,7 @@ const sendContactEmail = async (req, res = response) => {
    
         transporter.sendMail(mailOption, function (err, res) {
             if (err) {
+                console.log('error aaqui');
                 console.log(err);
 
             } else{
@@ -60,10 +62,9 @@ const sendContactEmail = async (req, res = response) => {
     
         transporter.close();
 
-
         return res.status(200).json({
             ok: true,
-            msg: 'mail  Enviado'
+            msg: 'email enviado correctamente'
         });
         
     } catch (error) {
