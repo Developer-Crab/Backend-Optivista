@@ -27,10 +27,18 @@ const ProductSchema = Schema({
         type: String,
         require: true,
     },
-    color: {
+    colorCristal: {
         type: String,
         require: true,
-    },    
+    },
+    colorMontura: {
+        type: String,
+        require: true,
+    },
+    gender: {
+        type: String,
+        require: true,
+    },
     brand: {
         type: Schema.Types.ObjectId,
         ref: 'Brand',

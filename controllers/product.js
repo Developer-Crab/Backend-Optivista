@@ -6,6 +6,7 @@ const Brand = require('../models/Brand');
 
 // CREAMOS UNA NUEVO PRODUCTO
 const setNewProduct = async(req, res = response) => {
+    
     // CREAMOS LA MARCA CON EL MODELO
     const dbProduct = new Product( req.body );
    
