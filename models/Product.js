@@ -1,6 +1,4 @@
 const { Schema, model } = require("mongoose");
-const Brand = require('../models/Brand')
-
 
 const ProductSchema = Schema({
    
@@ -39,10 +37,21 @@ const ProductSchema = Schema({
         type: String,
         require: true,
     },
+    user: {
+        require: true,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },   
     brand: {
+        require: true,
         type: Schema.Types.ObjectId,
         ref: 'Brand',
-        require: true }    
+    }    
+ });
+
+ ProductSchema.method('toJSON', function (){    
+    const { __v, ...object} = this.toObject();
+    return object;
  });
 
  module.exports = model('Product', ProductSchema);

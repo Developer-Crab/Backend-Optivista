@@ -1,15 +1,18 @@
 /*
-    ROUTE '/uploads/'
+    PATH '/api/uploads/'
 */ 
 // IMPORTS
 const { Router } = require('express');
 const expressfileUpload = require('express-fileupload');
-// ROUTER
-const router = Router();
+
 // CONTROLLERS
 const image  = require('../controllers/uploads');
-// VALIDATIONS
+
+// MIDDLEWARES
 const { validJWT } = require('../middlewares/validar-jwt');
+
+// ROUTER
+const router = Router();
 
 router.use( expressfileUpload() );
 

@@ -18,20 +18,28 @@ app.use( express.json());
 
 // --- CONFIGURAMOS LAS RUTAS
 
+// RUTAS reparando 
+app.use( '/api/users',    require( './routes/users'   ));
+app.use( '/api/products', require( './routes/product' ));
+app.use( '/api/brands',   require( './routes/brand'   ));
+app.use( '/api/all',      require( './routes/search'  ));
+app.use( '/api/login',    require( './routes/auth'    ));
+app.use( '/api/uploads/', require('./routes/uploads') );
+
+
 // USUARIOS
-app.use( '/customer/account/', require('./routes/auth') );
+// app.use( '/customer/account/', require('./routes/auth') );
 
 // PARA LOS PRODUCTOS
-app.use( '/products/', require('./routes/product') );
+// app.use( '/products/', require('./routes/product') );
 
 // MARCAS
-app.use( '/brands/', require('./routes/brand'));
+// app.use( '/brands/', require('./routes/brand'));
 
 //  MAIL
 app.use( '/customer/send-email/', require('./routes/contactMessage') );
 
 // SUBIDAD DE IMAGENES
-app.use( '/uploads/', require('./routes/uploads') );
 
 
 // ---  LEVANTAMOS LA APP DE EXPRESS --- //

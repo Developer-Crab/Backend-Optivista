@@ -1,27 +1,53 @@
 /*
-    ROUTE '/brands/'
+    PATH '/api/brands'
 */ 
 // IMPORTS
 const { Router }  = require('express');
 const { check } = require('express-validator');
+
 // ROUTER
 const router = Router();
+
 // CONTROLLERS
 const brand = require('../controllers/brand');
-// VALIDATIONS
+
+// MIDDLEWARES
 const { validJWT } = require('../middlewares/validar-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 /**
  * RUTA PARA OBTENER TODOS LAS MARCAS
  */
-router.get('', brand.getBrands);
+router.get( '/', validJWT, brand.getBrands);
 
 /**
  * RUTA PARA CREAR UNA NUEVA MARCA
  */
-router.post('/newbrand', validJWT, brand.setNewBrand);
+router.post('/', [
+    validJWT,
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
+    check('description', 'La descripción es obligatorio').not().isEmpty(),
+    validarCampos
+  ],
+   brand.setBrand);
 
-// EXPORTAMOS PARA SU USO EN OTRO LUGAR
+/**
+ * RUTA PARA ACTUALIZAR UNA NUEVA MARCA
+ */
+ router.put('/:id', [
+    validJWT,
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
+    check('description', 'La descripción es obligatorio').not().isEmpty(),
+    validarCampos
+  ],
+   brand.updateBrand);
+
+/**
+ * RUTA PARA ELIMINAR UNA NUEVA MARCA
+ */
+router.delete('/:id', validJWT, brand.deleteBrand);
+
+
+
 module.exports = router;
 

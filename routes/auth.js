@@ -1,42 +1,30 @@
 /*
-    ROUTE '/customer/account/'
+    PATH '/api/login'
 */
 // IMPORTS
 const { Router } = require('express');
 const { check } = require('express-validator');
+
 // ROUTER
 const router = Router();
+
 // CONTROLLERS
 const authController = require('../controllers/auth');
-// VALIDATIONS
+
+// MIDDLEWARES
 const { validJWT } = require('../middlewares/validar-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 /**
- * RUTA PARA LA CREACION DE UN NUEVO USUARIO CON SUS VALIDACIONES
+ * RUTA PARA EL LOGIN DE UN USUARIO
  */
-router.post('/create', [
-    check('name', 'El nombre es obligatorio').not().isEmpty(),
-    check('lastName', 'El nombre es obligatorio').not().isEmpty(),
-    check('birthDate', 'El nombre es obligatorio').not().isEmpty(),
-    check('sexo', 'El nombre es obligatorio').not().isEmpty(),
-    check('dni', 'El nombre es obligatorio').not().isEmpty(),
-    check('telephone', 'El nombre es obligatorio').not().isEmpty(),
+router.post( '/', [
     check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria').isLength({ min: 6}),
-    check('newsLetter'),
+    check('password', 'La contraseña es obligatoria y mayor de 6 caracteres').isLength({ min: 6 }),
     validarCampos
-], authController.SetNewUser);
-
-
-/**
- * RUTA PARA EL LOGIN DE UN USUARIO CON SUS VALIDACIONES
- */
-router.post('/login', [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria').isLength({ min: 6 }),
-    validarCampos
-], authController.login);
+ ],
+  authController.login
+);
 
 
 /**
@@ -44,10 +32,7 @@ router.post('/login', [
  */
 router.get('/renewToken', validJWT ,authController.renewToken);
 
-/**
- * RUTA PARA REVALIDAR EL TOKEN DEL USUARIO
- */
-router.get('/users', validJWT ,authController.getUsers);
+
 
 
 // EXPORTAMOS PARA SU USO EN OTRO LUGAR

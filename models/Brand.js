@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
 
 const BrandSchema = Schema({
    
-    title: {
+    name: {
         type: String,
         require: true
     },
@@ -12,10 +12,19 @@ const BrandSchema = Schema({
         type: String,
         require: true
     },
+    user: {
+        require: true,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },  
     img: {
         type: String,
-        require: true,
     },
+ });
+
+ BrandSchema.method('toJSON', function (){    
+    const { __v, ...object} = this.toObject();
+    return object;
  });
 
  module.exports = model('Brand', BrandSchema);

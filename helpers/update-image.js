@@ -1,8 +1,9 @@
 // IMPORTS
 const fs = require('fs');
+
 //MODELS
-const User = require('../models/User');
-const Brand = require('../models/Brand');
+const User    = require('../models/User');
+const Brand   = require('../models/Brand');
 const Product = require('../models/Product');
 
 // FUNCION PARA ELIMINAR UNA IMG
@@ -23,7 +24,6 @@ const updateImage = async(tipo, id,  nombreArchivo ) => {
     switch ( tipo ) {
 
         case 'users':
-
             const user =  await User.findById( id );
 
             if ( !user ) {
@@ -37,6 +37,8 @@ const updateImage = async(tipo, id,  nombreArchivo ) => {
             
             user.img = nombreArchivo;
             await user.save();
+
+            return true;
 
         break;
 
@@ -54,6 +56,8 @@ const updateImage = async(tipo, id,  nombreArchivo ) => {
             
             brand.img = nombreArchivo;
             await brand.save();
+
+            return true;
             
         break;
         
@@ -66,7 +70,7 @@ const updateImage = async(tipo, id,  nombreArchivo ) => {
                 return false; // SIGNIFICA QUE LA IMAGEN NO SE HA PODIDO SUBIR
             }
 
-                    // EVALUAMOS SI ESE PRODUCT TIENE UNA IMAGEN PREVIAMENTE ASIGNADA
+            // EVALUAMOS SI ESE PRODUCT TIENE UNA IMAGEN PREVIAMENTE ASIGNADA
             pathViejo =  `./uploads/products/${ product.img }`;
             deletedImage( pathViejo );
 

@@ -14,7 +14,7 @@ const fileUpdload = (req, res = response) => {
     const id   = req.params.id;
 
     // VALIDAMOS LOS TIPOS
-    const tiposValidos = ['users', 'products', 'brands', 'web'];
+    const tiposValidos = ['users', 'products', 'brands'];
 
     if ( !tiposValidos.includes(tipo) ) {
         return res.status(400).json({
@@ -60,7 +60,7 @@ const fileUpdload = (req, res = response) => {
             console.log(err);
             return res.status(500).json({
                 ok: false,
-                msg: 'Error al movel la imagen'
+                msg: 'Error al mover la imagen'
             });
         }
  
@@ -88,7 +88,7 @@ const getImage = (req, res = response) => {
     // SI EXISTE LA IMAGEN LA ENVIO 
     if ( fs.existsSync( pathImg ) ) {
         res.sendFile( pathImg );
-    } else{ // SI NO EXISTE ENVIAMO NOIMAGE POR DEFECTO
+    } else{ // SI NO EXISTE ENVIAMOs NOIMAGE POR DEFECTO
         const pathImg =  path.join( __dirname, '../uploads/noImage.png' );
         res.sendFile( pathImg );        
     }

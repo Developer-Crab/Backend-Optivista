@@ -7,30 +7,6 @@ const { Schema, model } = require("mongoose");
         type: String,
         require: true
     },
-    lastName: {
-        type: String,
-        require: true
-    },
-    secondLastName: {
-        type: String,
-        require: true
-    },
-    birthDate: {
-        type: Date,
-        require: true
-    },
-    sexo: {
-        type: String,
-        require: true
-    },
-    dni: {
-        type: String,
-        require: true
-    },
-    telephone: {
-        type: String,
-        require: true
-    },
     email: {
         type: String,
         require: true,
@@ -40,9 +16,29 @@ const { Schema, model } = require("mongoose");
         type: String,
         require: true,
     },
-    isAdmin: {
+    img: {
+        type: String,
+    },
+    role: {
+        type: String,
+        require: true,
+        default: 'USER_ROLE'
+    },
+    google: {
         type: Boolean,
         default: false
+    },
+    birthDate: {
+        type: Date,
+        require: true
+    },
+    sexo: {
+        type: String,
+        require: true
+    },
+    phone: {
+        type: String,
+        require: true
     },
     newsLetter: {
         type: Boolean,
@@ -53,11 +49,17 @@ const { Schema, model } = require("mongoose");
         type: Date,
         default: new Date(),
     },
-    img: {
-        type: String,
-    },
  });
 
+ UserSchema.method('toJSON', function (){
+    
+    const { __v, _id, password, ...object} = this.toObject();
+
+    object.uid = _id;
+
+    return object;
+
+ });
 
 
  module.exports = model('User', UserSchema);

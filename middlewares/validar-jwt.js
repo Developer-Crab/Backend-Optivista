@@ -8,15 +8,15 @@ const validJWT = (req, res = response, next) => {
     if ( !token ) {
         return res.status(401).json({
             ok: false,
-            msg: 'Error en el token'
+            msg: 'No hay Token en la peteción'
         });
     }
 
     try {
-
       const { uid, name } =  jwt.verify( token, process.env.SECRET_JWT_SEED );
-      req.uid = uid;
-      req.name = name;
+      req.uid = uid;  
+
+      next();
     
     } catch (error) {
         console.log( error );
@@ -26,9 +26,7 @@ const validJWT = (req, res = response, next) => {
         });
     }
 
-    // TODO OK
-
-    next();
+ 
 }
 
 module.exports = {
