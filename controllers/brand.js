@@ -20,14 +20,14 @@ const setBrand = async(req, res = response) => {
         // GENERAMOS RESPUESTA EXITOSA
         return res.status(201).json({
             ok: true,
-            brand: brandDB
+            Brand: brandDB
         });
         
     } catch (error) {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            msg: 'Por favor hable con el administrador-subidaBrandErr'
+            msg: 'Por favor hable con el administrador(subidaBrandErr)'
         }); 
     }
 
@@ -38,81 +38,100 @@ const setBrand = async(req, res = response) => {
 const getBrands = async(req, res = response) => {
 
     // OBTENEMOS LAS MARCAS
-    const brands = await Brand.find()
-    .populate('user', 'name')
+    // SIN PAG
+    // const brands = await Brand.find()
+    //                           .populate('user', 'name')
+    // CON PAG
+    const from = Number(req.query.from) || 0;
+
+    const [ brands, total ] = await Promise.all([
+        Brand.find()
+                .skip( from )
+                .limit( 5 ),
+
+        Brand.count()
+    ]);
 
     res.json({
         ok: true,
-        brands: brands
+        Brands: brands,
+        Total: total
     });
 
-    // const from = Number(req.query.from) || 0;
-
-    // const [ brands, total ] = await Promise.all([
-    //     Brand.find()
-    //             .skip( from ),
-    //             // .limit( 5 ),
-
-    //     Brand.count()
-    // ]);
-
-    // res.json({
-    //     ok: true,
-    //     brands,
-    //     total
-    // });
 
 }
 
-// ACTUALIZAMOS TODAS LAS MARCAS
+// ACTUALIZAMOS UNA MARCA 
 const updateBrand = async(req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'Marca actualizada correctamente'
-    });
+    const brandId = req.params.id;
+    const uid = req.uid;
 
-    // const from = Number(req.query.from) || 0;
+    try {
+    
+        const brand = await Brand.findById( brandId );
 
-    // const [ brands, total ] = await Promise.all([
-    //     Brand.find()
-    //             .skip( from ),
-    //             // .limit( 5 ),
+        if ( !brand ) {
+            res.status(404).json({
+                ok: false,
+                msg: 'Marca no encontrada por Id'
+            });
+        }
 
-    //     Brand.count()
-    // ]);
+        const brandToChange = {
+            ...req.body,
+            user: uid,
+        }
 
-    // res.json({
-    //     ok: true,
-    //     brands,
-    //     total
-    // });
+        const branUpdate = await Brand.findByIdAndUpdate( brandId, brandToChange, { new: true} );
+
+        res.json({
+            ok: true,
+            Brand: branUpdate
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador(UpdateBrandErr)'
+        });
+    }
 
 }
 
 // ELIMINAMOS LA MARCA
 const deleteBrand = async(req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'Marca eliminada correctamente'
-    });
+    const brandId = req.params.id;
 
-    // const from = Number(req.query.from) || 0;
+    try {
+        
+        const brand = await Brand.findById( brandId );
 
-    // const [ brands, total ] = await Promise.all([
-    //     Brand.find()
-    //             .skip( from ),
-    //             // .limit( 5 ),
+        if ( !brand ) { //SI NO EXISTE RETORNAMOS 404
 
-    //     Brand.count()
-    // ]);
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe la marca por ese id en la BD'
+            });
+        }
 
-    // res.json({
-    //     ok: true,
-    //     brands,
-    //     total
-    // });
+        // SI EXISTE LO BORRAMOS
+        await Brand.findByIdAndRemove( brandId );
+
+        return res.json({
+            ok: true,
+            msg: 'Marca eliminada'
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador(eliminarBrandErr)'
+        }); 
+    }
 
 }
 

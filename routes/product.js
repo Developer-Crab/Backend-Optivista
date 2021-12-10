@@ -15,12 +15,10 @@ const product = require('../controllers/product');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validJWT }      = require('../middlewares/validar-jwt');
 
-
 /**
  * RUTA PARA OBTENER TODOS LOS PRODUCTOS
  */
 router.get( '/', validJWT , product.getProducts);
-
 
 /**
  * RUTA PARA CREAR UN NUEVO PRODUCTO 
@@ -54,14 +52,10 @@ router.put('/:id', [
         validarCampos
     ], product.updateProduct);
 
-
 /**
  * RUTA PARA ELIMINAR UN PRODUCTO POR SI ID
 */
 router.delete('/:id', validJWT, product.deleteProduct );
-
-
-
 
 // EXPORTAMOS PARA SU USO EN OTRO LUGAR
 module.exports = router;

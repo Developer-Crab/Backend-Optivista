@@ -40,7 +40,7 @@ router.post( '/google', [
 /**
  * RUTA PARA REVALIDAR EL TOKEN DEL USUARIO
  */
-router.get('/renewToken', validJWT ,authController.renewToken);
+router.get('/renew', validJWT , authController.renewToken);
 
 
 

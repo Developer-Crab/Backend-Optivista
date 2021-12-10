@@ -16,12 +16,12 @@ const { validJWT } = require('../middlewares/validar-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 /**
- * RUTA PARA OBTENER TODOS LAS MARCAS
+ * RUTA PARA OBTENER TODAS LAS MARCAS
  */
 router.get( '/', validJWT, brand.getBrands);
 
 /**
- * RUTA PARA CREAR UNA NUEVA MARCA
+ * RUTA PARA CREAR UNA MARCA
  */
 router.post('/', [
     validJWT,
@@ -43,7 +43,7 @@ router.post('/', [
    brand.updateBrand);
 
 /**
- * RUTA PARA ELIMINAR UNA NUEVA MARCA
+ * RUTA PARA ELIMINAR UNA MARCA
  */
 router.delete('/:id', validJWT, brand.deleteBrand);
 

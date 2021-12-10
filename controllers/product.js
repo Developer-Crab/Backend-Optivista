@@ -4,8 +4,7 @@ const { response } = require('express');
 // MODELS
 const Product = require('../models/Product');
 
-
-// CREAMOS UNA NUEVO PRODUCTO
+// CREAMOS UN NUEVO PRODUCTO
 const setProduct = async(req, res = response) => {
        
     // CREAMOS El PRODUCTO CON EL MODELO
@@ -16,21 +15,20 @@ const setProduct = async(req, res = response) => {
     });
    
     try {
-        
         // CREAMOS El PRODUCTO EN LA DB 
         const productDB = await product.save();
 
         // GENERAMOS RESPUESTA EXITOSA
         return res.status(201).json({
             ok: true,
-            product: productDB
+            Product: productDB
         });
                 
     } catch (error) {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            msg: 'Por favor hable con el administrador-subidaProductoErr'
+            msg: 'Por favor hable con el administrador(subidaProductoErr)'
         }); 
     }
 
@@ -57,94 +55,85 @@ const getProducts = async(req, res = response) => {
         Product.count()
     ]);
 
-                       
-
     res.json({  
         ok: true,
         products: products,
         total
     });
 
-    // const from = Number(req.query.from) || 0;
-
-    // try {
-        
-    //     const [ products, total ] = await Promise.all([
-    //         Product.find()
-    //                 .populate('brand')
-    //                 .skip( from ),
-    //                 // .limit( 5 ),
-    
-    //         Product.count()
-    //     ]);
-    
-    //     // res.json({
-    //     //     ok: true,
-    //     //     products,
-    //     //     total
-    //     // });
-    //     return res.status(200).json({
-    //         ok: true,
-    //         products,
-    //         total
-    //     });
-
-    // } catch (error) {
-    //     console.log(error);
-    //     return res.status(500).json({
-    //         ok: false,
-    //         msg: 'Por favor hable con el administrador(obtenciónTodosProductosError)'
-    //     }); 
-    // }
-
 }
 
 // ACTUALIZAR UN PRODUCTO 
 const updateProduct = async(req, res = response) => {
     
-    res.json({
-        ok: true,
-        msg: 'Producto Actualizado correctamente'
-    });
+    const productId = req.params.id;
+    const uid = req.uid;
+
+    try {
+
+        const product = await Product.findById( productId );
+
+        if ( !product ) {
+            res.status(404).json({
+                ok: false,
+                msg: 'Producto no encontrado por Id'
+            });
+        }
+        
+        const productToChange = {
+            ...req.body,
+            user: uid,
+        }
+
+        const productUpdate = await Product.findByIdAndUpdate( productId, productToChange, { new: true } );
+
+        res.json({
+            ok: true,
+            Product: productUpdate
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador(UpdateProductErr)'
+        });
+    }
+
 }
 
 // ELIMINAMOS UN PRODUCTO POR SU ID
 const deleteProduct = async(req, res = response) => {
     
-    res.json({
-        ok: true,
-        msg: 'Producto Borrado correctamente'
-    });
-    // const id = req.params.id; // OBTENEMOS EL ID DE LA URL
+    const id = req.params.id; // OBTENEMOS EL ID DE LA URL
 
-    // try {
+    try {
 
-    //     const product = await Product.findById( id ); // COMPROBAMOS QUE EL PRODUCTO EXISTA EN LA BD
+        const product = await Product.findById( id ); // COMPROBAMOS QUE EL PRODUCTO EXISTA EN LA BD
         
-    //     if ( !product ) { //SI NO EXISTE RETORNAMOS 404
+        if ( !product ) { //SI NO EXISTE RETORNAMOS 404
 
-    //         return res.status(404).json({
-    //             ok: false,
-    //             msg: 'No existe el producto por ese id en la BD'
-    //         });
-    //     }
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe el producto por ese id en la BD'
+            });
+        }
 
-    //     // SI EXISTE LO BORRAMOS
-    //     await Product.findByIdAndRemove( id );
+        // SI EXISTE LO BORRAMOS
+        await Product.findByIdAndRemove( id );
 
-    //     return res.json({
-    //         ok: true,
-    //         msg: 'Producto eliminado correctamente',
-    //         product
-    //     });
-
-    // } catch (error) {
-    //     console.log(error);
-    //     return res.status(500).json({
-    //         ok: false,
-    //         msg: 'Por favor hable con el administrador(eliminarProductoErr)'
-    //     }); 
-    // }
+        return res.json({
+            ok: true,
+            msg: 'Producto eliminado'
+        });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador(eliminarProductoErr)'
+        }); 
+    }
 
 }
 

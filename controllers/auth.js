@@ -57,6 +57,7 @@ const login = async(req, res = response) => {
     }
 }
 
+// CREAMOS EL LOGIN CON EL GOOGLESIGNIN
 const googleSignIn = async(req, res = response) => {
 
     const googleToken = req.body.token;
@@ -110,20 +111,13 @@ const googleSignIn = async(req, res = response) => {
 // RENOVACIÓN DEL TOKEN
 const renewToken = async(req, res = response) => {
 
-    const { uid } = req;
-
-    // READ DATABASE
-    const dbUser = await User.findById(uid);
+    const uid  = req.uid;
 
     // GENERANDO EL JWT
-    const token = await generateJWT( uid, dbUser.name );
+    const token = await generateJWT( uid );
 
     return res.json({
-        ok      : true,
-        uid,
-        name    : dbUser.name,
-        email   : dbUser.email,
-        isAdmin : dbUser.isAdmin,
+        ok: true,
         token
     });
 }
