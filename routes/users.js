@@ -24,10 +24,7 @@ router.get( '/', validJWT ,userController.getUsers );
 router.post( '/', [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria').isLength({ min: 6}),
-    check('birthDate', 'El nombre es obligatorio').not().isEmpty(),
-    check('sexo', 'El nombre es obligatorio').not().isEmpty(),
-    check('phone', 'El nombre es obligatorio').not().isEmpty(),
+    check('password', 'La contraseña es obligatoria y minimo 6 caracteres').isLength({ min: 6}),
     validarCampos
  ], userController.setUser 
 );
@@ -40,9 +37,9 @@ router.put( '/:id', [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
     check('role', 'El role es obligatorio').not().isEmpty(),
-    check('birthDate', 'El nombre es obligatorio').not().isEmpty(),
+    check('birthDate', 'La edad es obligatorio').not().isEmpty(),
     check('sexo', 'El nombre es obligatorio').not().isEmpty(),
-    check('phone', 'El nombre es obligatorio').not().isEmpty(),
+    check('phone', 'El telefono es obligatorio').not().isEmpty(),
     validarCampos
  ],  
 userController.updateUser );

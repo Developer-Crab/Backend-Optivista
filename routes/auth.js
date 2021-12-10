@@ -20,10 +20,20 @@ const { validarCampos } = require('../middlewares/validar-campos');
  */
 router.post( '/', [
     check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'La contraseña es obligatoria y mayor de 6 caracteres').isLength({ min: 6 }),
+    check('password', 'La contraseña es incorrecta').isLength({ min: 6 }),
     validarCampos
  ],
   authController.login
+);
+
+/**
+ * RUTA PARA EL LOGIN DE UN USUARIO CON GOOGLE
+ */
+router.post( '/google', [
+    check('token', 'El token de Google es obligatorio').not().isEmpty(),
+    validarCampos
+ ],
+  authController.googleSignIn
 );
 
 

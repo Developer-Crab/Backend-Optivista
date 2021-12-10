@@ -30,15 +30,12 @@ const { Schema, model } = require("mongoose");
     },
     birthDate: {
         type: Date,
-        require: true
     },
     sexo: {
         type: String,
-        require: true
     },
     phone: {
         type: String,
-        require: true
     },
     newsLetter: {
         type: Boolean,
@@ -47,6 +44,7 @@ const { Schema, model } = require("mongoose");
     },
     dateOfRegister: {
         type: Date,
+        require: true,
         default: new Date(),
     },
  });

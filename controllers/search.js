@@ -29,7 +29,6 @@ const getAll = async(req, res = response) => {
 
 }
 
-
 // OPERACION DE BUSQUEDA SEGMENTADA
 const getColletionDocument = async(req, res = response) => {
 

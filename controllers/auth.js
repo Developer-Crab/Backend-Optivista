@@ -9,10 +9,11 @@ const User = require('../models/User');
 
 // HERLPERS
 const { generateJWT } = require('../helpers/jwt');
+const { googleVerify } = require('../helpers/google-verify');
 
 
 // CREAMOS EL LOGIN DE LA APP
-const login = async(req, res = response ) => {
+const login = async(req, res = response) => {
 
     const { email, password } = req.body;
     
@@ -28,7 +29,7 @@ const login = async(req, res = response ) => {
             }); 
         }
 
-        // VERIFICAMOS EMAIL
+        // VERIFICAMOS SI LA CONTRASEÑA ES LA MISMA QUE LA DE LA BD
         const validPassword = bcrypt.compareSync( password, userDB.password );
 
         if ( !validPassword ) {
@@ -56,6 +57,55 @@ const login = async(req, res = response ) => {
     }
 }
 
+const googleSignIn = async(req, res = response) => {
+
+    const googleToken = req.body.token;
+
+    try {
+
+        const { name, email, picture } = await googleVerify( googleToken );
+
+        // VERIFICAMOS SI EXISTE UN USUARIO CON ESE EMAIL
+        const userDB = await  User.findOne( { email } );
+        let user ;
+
+        if ( !userDB ) {
+            // SI NO EXISTE EL USUARIO
+            user = new User({
+                name,
+                email,
+                password: '@@@',
+                img: picture,
+                google: true,
+            });
+        } else{
+            // EXISTE USUARIO
+            user = userDB;
+            user.google = true;
+        }
+
+        // GUARDAMOS EN LA BD
+        await user.save();
+
+        // GENERAMOS EL JWT
+         const token = await generateJWT( user.id );
+
+        res.json({
+            ok: true,
+            token
+        });
+        
+        
+    } catch (error) {
+        res.status(401).json({
+            ok: false,
+            msg: 'Token no es correcto'
+        });
+    }
+
+
+
+}
 
 // RENOVACIÓN DEL TOKEN
 const renewToken = async(req, res = response) => {
@@ -84,4 +134,5 @@ const renewToken = async(req, res = response) => {
 module.exports = {
     login,
     renewToken,
+    googleSignIn
 }
