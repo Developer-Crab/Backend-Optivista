@@ -108,7 +108,28 @@ const updateUser = async(req, res = response) => {
                 });
             }
         }
-        campos.email = email;
+
+        //TODO: VERIFICAR ESTO
+        // if ( !userDB.google) {
+        //     campos.email = email;
+        // } else if ( usuarioDB.email !== email ) {
+        //     return res.status(400).json({
+        //         ok: false,
+        //         msg: 'Usuario de google no puede cambiar su correo'
+        //     });
+        // }
+
+        // if (userDB.google) {
+        //     return res.status(400).json({
+        //         ok: false,
+        //         msg: 'Usuario de google no puede cambiar su correo'
+        //     });
+        // } else {
+            // }
+         
+            campos.email = email;
+  
+
         const userUpdate = await User.findByIdAndUpdate( uid, campos, { new: true} );
 
         res.json({

@@ -29,7 +29,7 @@ const { Schema, model } = require("mongoose");
         default: false
     },
     birthDate: {
-        type: Date,
+        type: Date
     },
     sexo: {
         type: String,
