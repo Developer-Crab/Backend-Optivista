@@ -11,14 +11,15 @@ require('dotenv').config();
 // CREAMOS EL SEVIDOR/APP DE EXPERSS
 const app = express(); 
 
+// CORS
+app.use( cors() );
+
 // CONEXION A LA BD
 dbConnection();
 
 // DIRECTORIO PUBLICO
 app.use( express.static('public'));
 
-// CORS
-app.use( cors() );
 
 // MIDDLEWARE PARA PODER LEER LA INFORMACION DEL BODY
 app.use( express.json());
