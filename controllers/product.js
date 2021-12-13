@@ -49,8 +49,8 @@ const getProducts = async(req, res = response) => {
         Product.find()
                 .populate('user', 'name')
                 .populate('brand','name')
-                .skip( from )
-                .limit( 5 ),
+                .skip( from ),
+                // .limit( 5 ),
 
         Product.count()
     ]);

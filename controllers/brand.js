@@ -46,16 +46,16 @@ const getBrands = async(req, res = response) => {
 
     const [ brands, total ] = await Promise.all([
         Brand.find()
-                .skip( from )
-                .limit( 5 ),
+                .skip( from ),
+                // .limit( 5 ),
 
         Brand.count()
     ]);
 
     res.json({
         ok: true,
-        Brands: brands,
-        Total: total
+        brands,
+        total
     });
 
 
